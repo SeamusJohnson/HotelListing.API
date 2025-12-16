@@ -37,3 +37,74 @@ Content-Type: application/json
 }
 
 ###
+
+GET {{HotelListing.API_HostAddress}}/api/countries
+
+###
+
+POST {{HotelListing.API_HostAddress}}/api/countries
+Content-Type: application/json
+
+{
+  "Name": "Next Country",
+  "ShortName": "TC"
+}
+
+###
+
+@id=1
+DELETE {{HotelListing.API_HostAddress}}/api/countries/{{id}}
+
+###
+@id=1
+GET {{HotelListing.API_HostAddress}}/api/countries/{{id}}
+
+###
+
+PUT {{HotelListing.API_HostAddress}}/api/countries/{{id}}
+Content-Type: application/json
+
+{
+  "CountryId": 1,
+  "Name": "United States",
+  "ShortName": "US"
+}
+
+###
+
+GET {{HotelListing.API_HostAddress}}/api/hotels
+
+###
+
+POST {{HotelListing.API_HostAddress}}/api/hotels
+Content-Type: application/json
+
+{
+  "Name": "Last Hotel",
+  "Address": "123 Main St",
+  "Rating": 4.5,
+  "CountryId": 3
+}
+
+###
+
+DELETE {{HotelListing.API_HostAddress}}/api/hotels/{{id}}
+
+###
+
+GET {{HotelListing.API_HostAddress}}/api/hotels/{{id}}
+
+###
+
+PUT {{HotelListing.API_HostAddress}}/api/hotels/{{id}}
+Content-Type: application/json
+
+{
+  "Id": 2,
+  "Name": "Hilton",
+  "Address": "123 Main St",
+  "Rating": 4.5,
+  "CountryId": 1
+}
+
+###
