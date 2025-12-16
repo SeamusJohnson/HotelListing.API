@@ -1,4 +1,6 @@
-﻿using HotelListing.API.Data;
+﻿using HotelListing.API.Contracts;
+using HotelListing.API.Data;
+using HotelListing.API.DTOs.Hotel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,25 +8,23 @@ namespace HotelListing.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class HotelsController(HotelListingDbContext context) : ControllerBase
+public class HotelsController(IHotelsService hotelsService) : ControllerBase
 {
 
     // GET: api/Hotels
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Hotel>>> GetHotels()
+    public async Task<ActionResult<IEnumerable<GetHotelDto>>> GetHotels()
     {
-        return await context.Hotels
-            //.Include(h => h.Country)
-            .ToListAsync();
+        var hotels = await hotelsService.GetHotelsAsync();
+
+        return Ok(hotels);
     }
 
     // GET: api/Hotels/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Hotel>> GetHotel(int id)
+    public async Task<ActionResult<GetHotelDto>> GetHotel(int id)
     {
-        var hotel = await context.Hotels
-            .Include(h => h.Country)
-            .FirstOrDefaultAsync(q => q.Id == id);
+        var hotel = await hotelsService.GetHotelAsync(id);
 
         if (hotel == null)
         {
@@ -37,22 +37,20 @@ public class HotelsController(HotelListingDbContext context) : ControllerBase
     // PUT: api/Hotels/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutHotel(int id, Hotel hotel)
+    public async Task<IActionResult> PutHotel(int id, UpdateHotelDto hotelDto)
     {
-        if (id != hotel.Id)
+        if (id != hotelDto.Id)
         {
             return BadRequest();
         }
 
-        context.Entry(hotel).State = EntityState.Modified;
-
         try
         {
-            await context.SaveChangesAsync();
+            await hotelsService.UpdateHotelAsync(id, hotelDto);
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (! await HotelExistsAsync(id))
+            if (! await hotelsService.HotelExistsAsync(id))
             {
                 return NotFound();
             }
@@ -68,10 +66,9 @@ public class HotelsController(HotelListingDbContext context) : ControllerBase
     // POST: api/Hotels
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Hotel>> PostHotel(Hotel hotel)
+    public async Task<ActionResult<Hotel>> PostHotel(CreateHotelDto hotelDto)
     {
-        context.Hotels.Add(hotel);
-        await context.SaveChangesAsync();
+        var hotel = await hotelsService.CreateHotelAsync(hotelDto);
 
         return CreatedAtAction("GetHotel", new { id = hotel.Id }, hotel);
     }
@@ -80,20 +77,7 @@ public class HotelsController(HotelListingDbContext context) : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteHotel(int id)
     {
-        var hotel = await context.Hotels.FindAsync(id);
-        if (hotel == null)
-        {
-            return NotFound();
-        }
-
-        context.Hotels.Remove(hotel);
-        await context.SaveChangesAsync();
-
+        await hotelsService.DeleteHotelAsync(id);
         return NoContent();
-    }
-
-    private async Task<bool> HotelExistsAsync(int id)
-    {
-        return await context.Hotels.AnyAsync(e => e.Id == id);
     }
 }

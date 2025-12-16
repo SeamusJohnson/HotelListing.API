@@ -87,7 +87,7 @@ Content-Type: application/json
 }
 
 ###
-
+@id=2
 DELETE {{HotelListing.API_HostAddress}}/api/hotels/{{id}}
 
 ###
@@ -102,7 +102,7 @@ Content-Type: application/json
 {
   "Id": 2,
   "Name": "Hilton",
-  "Address": "123 Main St",
+  "Address": "321 Main St",
   "Rating": 4.5,
   "CountryId": 1
 }
