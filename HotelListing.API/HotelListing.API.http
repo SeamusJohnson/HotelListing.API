@@ -1,6 +1,10 @@
 @HotelListing.API_HostAddress = https://localhost:7162
 
 
+@id=3
+
+
+
 GET {{HotelListing.API_HostAddress}}/api/hotels
 
 ###
@@ -9,7 +13,6 @@ POST {{HotelListing.API_HostAddress}}/api/hotels
 Content-Type: application/json
 
 {
-  "id": 3,
   "name": "Grand Plaza",
   "address": "123 Main St",
   "rating": 4.5
@@ -17,7 +20,6 @@ Content-Type: application/json
 
 ###
 
-@id=3
 DELETE {{HotelListing.API_HostAddress}}/api/hotels/{{id}}
 
 ###
@@ -46,17 +48,16 @@ POST {{HotelListing.API_HostAddress}}/api/countries
 Content-Type: application/json
 
 {
-  "Name": "Next Country",
-  "ShortName": "TC"
+  "Name": "Africa",
+  "ShortName": "SA"
 }
 
 ###
 
-@id=1
 DELETE {{HotelListing.API_HostAddress}}/api/countries/{{id}}
 
 ###
-@id=1
+
 GET {{HotelListing.API_HostAddress}}/api/countries/{{id}}
 
 ###
@@ -65,8 +66,8 @@ PUT {{HotelListing.API_HostAddress}}/api/countries/{{id}}
 Content-Type: application/json
 
 {
-  "CountryId": 1,
-  "Name": "United States",
+  "CountryId": 56,
+  "Name": "United States of America",
   "ShortName": "US"
 }
 
@@ -87,7 +88,6 @@ Content-Type: application/json
 }
 
 ###
-@id=2
 DELETE {{HotelListing.API_HostAddress}}/api/hotels/{{id}}
 
 ###

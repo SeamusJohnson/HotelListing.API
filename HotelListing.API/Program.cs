@@ -1,6 +1,8 @@
 using HotelListing.API.Contracts;
 using HotelListing.API.Data;
+using HotelListing.API.MappingProfiles;
 using HotelListing.API.Services;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,11 @@ builder.Services.AddDbContext<HotelListingDbContext>(options => options.UseSqlSe
 builder.Services.AddScoped<ICountriesService, CountriesService>();
 builder.Services.AddScoped<IHotelsService, HotelsService>();
 
+builder.Services.AddAutoMapper( cfg =>
+{
+    cfg.AddProfile<HotelMappingProfile>();
+    cfg.AddProfile<CountryMappingProfile>();
+});
 builder.Services.AddControllers()
     .AddJsonOptions(opt =>
     {
